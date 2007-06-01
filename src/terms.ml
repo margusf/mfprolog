@@ -1,0 +1,1 @@
+type term = Atom of string | Var of string

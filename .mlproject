@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ocamlProject>
+  <sourcePath path="src"/>
+  <outputPath path="src"/>
+  <binPath path="bin"/>
+  <targetBinary name="result.exe"/>
+</ocamlProject>

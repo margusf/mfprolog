@@ -5,7 +5,7 @@ open Common
 let rec all_term_vars = function
   | Atom _ -> []
   | Var v -> [v]
-  | Complex (func, args) -> flatten (List.map all_term_vars args)
+  | Complex (func, args) -> List.flatten (List.map all_term_vars args)
 
 let term_contains_var term var =
   List.mem var (all_term_vars term)

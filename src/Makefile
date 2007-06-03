@@ -3,7 +3,9 @@ all: mfprolog
 clean:
 	rm -f *.cmo *.cmi mfprolog
 
-mfprolog: common.cmo unify.cmo mfprolog.cmo
+re: clean all
+
+mfprolog: common.cmo unify.cmo print.cmo inference.cmo mfprolog.cmo
 	ocamlc -o mfprolog $<
 
 %.cmo: %.ml

@@ -2,14 +2,6 @@ open Common
 
 (* Unification *)
 
-let rec all_term_vars = function
-  | Atom _ -> []
-  | Var v -> [v]
-  | Complex (func, args) -> List.flatten (List.map all_term_vars args)
-
-let term_contains_var term var =
-  List.mem var (all_term_vars term)
-
 let rec unify term1 term2 =
   match term1, term2 with
     | Atom a1, Atom a2 -> if a1 = a2 then Some empty_subst else None

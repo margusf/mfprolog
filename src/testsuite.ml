@@ -1,5 +1,6 @@
 open Common
 open Unify
+open Inference
 
 let pattern1 =
   Complex ("boo",

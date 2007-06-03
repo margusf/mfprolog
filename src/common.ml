@@ -18,3 +18,25 @@ let subst_in_terms subst = List.map (subst_in_term subst)
 
 let compose_subst s1 s2 =
   function id -> subst_in_term s2 (apply_subst s1 id)
+
+(* All variables of a term *)
+
+let rec all_term_vars = function
+  | Atom _ -> []
+  | Var v -> [v]
+  | Complex (func, args) -> List.flatten (List.map all_term_vars args)
+
+let term_contains_var term var =
+  List.mem var (all_term_vars term)
+
+let unique_list =
+  let rec iter ret = function
+    | [] -> ret
+    | h :: t ->
+      if List.mem h ret
+      then iter ret t
+      else iter (h :: ret) t
+  in iter []
+  
+let unique_termlist_vars terms = 
+  unique_list (List.flatten (List.map all_term_vars terms))

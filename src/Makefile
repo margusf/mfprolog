@@ -1,6 +1,6 @@
 OBJECTS = common.cmo unify.cmo print.cmo inference.cmo
 
-TESTS = test_inference
+TESTS = test_unify test_inference
 
 all: mfprolog
 
@@ -9,9 +9,10 @@ clean:
 
 re: clean all
 
-test: all $(TESTS)
-	for i in $(TESTS) do;\
-		ocamlrun $i || exit 1;\
+check: all $(TESTS)
+	for i in $(TESTS) ;\
+	do \
+		ocamlrun $$i || exit 1 ;\
 	done
 
 mfprolog: $(OBJECTS) mfprolog.cmo
@@ -20,4 +21,8 @@ mfprolog: $(OBJECTS) mfprolog.cmo
 %.cmo: %.ml
 	ocamlc -c -o $@ $<
 
-test_unify
+test_unify: $(OBJECTS) test_unify.ml
+	ocamlc -o $@ $(OBJECTS) test_unify.ml
+
+test_inference: $(OBJECTS) test_inference.ml
+	ocamlc -o $@ $(OBJECTS) test_inference.ml

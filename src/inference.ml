@@ -61,4 +61,4 @@ let solve goals =
     (fun subst fkont ->
        print_endline
          (string_of_terms (subst_in_terms subst goals)))
-    (fun () -> ())
+    (fun () -> print_endline "No")

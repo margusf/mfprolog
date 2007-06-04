@@ -2,6 +2,9 @@
 
 type term = Atom of string | Var of string | Complex of string * term list
 
+(* Rule is head and list of conditions *)
+type rule = string * string list
+
 (* Variable substitutions. *)
 
 let empty_subst = fun id -> Var id
@@ -12,7 +15,8 @@ let unit_subst id new_term =
 let rec subst_in_term subst = function
   | Atom a -> Atom a
   | Var v -> apply_subst subst v
-  | Complex (func, args) -> Complex (func, List.map (subst_in_term subst) args)
+  | Complex (func, args) ->
+    Complex (func, List.map (subst_in_term subst) args)
 
 let subst_in_terms subst = List.map (subst_in_term subst)
 
@@ -40,3 +44,14 @@ let unique_list =
   
 let unique_termlist_vars terms = 
   unique_list (List.flatten (List.map all_term_vars terms))
+
+(* Debugging *)
+
+let debug_enabled = ref false
+
+let enable_debug () = debug_enabled := true
+
+let debug s =
+  if !debug_enabled
+  then print_endline ("DEBUG: " ^ s)
+  else ()

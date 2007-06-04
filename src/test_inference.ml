@@ -9,7 +9,7 @@ rules := [
   Complex ("likes", [Atom "mary"; Atom "wine"]), [];
   Complex ("likes", [Atom "john"; Atom "mary"]), [];
   Complex ("likes", [Atom "john"; Var "X"]),
-  [Complex ("likes", [Atom "mary"; Atom "X"])]
+  [Complex ("likes", [Atom "mary"; Var "X"])]
 ];
 
 let goals = [
@@ -20,6 +20,6 @@ let goals = [
   Complex ("likes", [Atom "mary"; Atom "booze"]);
   Complex ("likes", [Atom "john"; Var "X"])] 
 and test_goal goal =
-  print_endline ("Solving goal " ^ (string_of_term goal));
+  print_endline ("\nSolving goal " ^ (string_of_term goal));
   solve [goal] in
 List.iter test_goal goals;;

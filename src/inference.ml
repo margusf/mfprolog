@@ -2,9 +2,6 @@ open Common
 open Unify
 open Print
 
-(* Rule is head and list of conditions *)
-type rule = string * string list
-
 (* List of currently valid rules. *)
 
 let rules = ref []
@@ -27,7 +24,9 @@ let fresh_rule (rhead, rtail) =
   let collect_subst subst old_var new_var =
     compose_subst (unit_subst old_var (Var new_var)) subst in
   let new_subst = List.fold_left2 collect_subst empty_subst all_vars subst_vars in
-    subst_in_term new_subst rhead, subst_in_terms new_subst rtail
+  let new_head = subst_in_term new_subst rhead
+  and new_tail = subst_in_terms new_subst rtail in
+    new_head, new_tail
 
 (* Inference engine *)
 
@@ -48,11 +47,15 @@ and match_term term subst success failure =
   in match_rule_list !rules
 and match_term_single_rule rule term subst success failure =
   let new_head, new_tail = fresh_rule rule in
+    debug ("Fresh rule: " ^ (string_of_rule (new_head, new_tail)));
     match unify new_head term with
       | None -> failure ()
       | Some new_subst ->
+        debug ("Unified goal: " ^ (string_of_term (subst_in_term new_subst term)));
+        debug ("Unified head: " ^ (string_of_term (subst_in_term new_subst new_head)));
+        debug ("New goals: " ^ (string_of_terms ", " (subst_in_terms new_subst new_tail)));
         match_terms (subst_in_terms new_subst new_tail) (* New goals *)
-          new_subst success failure
+          (compose_subst new_subst subst) success failure
 
 (* Main driver *)
 
@@ -60,5 +63,6 @@ let solve goals =
   match_terms goals empty_subst
     (fun subst fkont ->
        print_endline
-         (string_of_terms (subst_in_terms subst goals)))
+         (string_of_terms "\n" (subst_in_terms subst goals));
+       fkont ())
     (fun () -> print_endline "No")

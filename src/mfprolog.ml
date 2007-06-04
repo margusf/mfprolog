@@ -1,1 +1,1 @@
-open Inference
+print_endline "mfprolog!";;

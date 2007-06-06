@@ -13,6 +13,7 @@ let rules = ref []
 let current_var_number = ref 0
 
 let next_var_name () =
+  current_var_number := !current_var_number + 1;
   "_G" ^ (string_of_int !current_var_number)
 
 let make_subst_vars =
@@ -54,8 +55,8 @@ and match_term_single_rule rule term subst success failure =
         debug ("Unified goal: " ^ (string_of_term (subst_in_term new_subst term)));
         debug ("Unified head: " ^ (string_of_term (subst_in_term new_subst new_head)));
         debug ("New goals: " ^ (string_of_terms ", " (subst_in_terms new_subst new_tail)));
-        match_terms (subst_in_terms new_subst new_tail) (* New goals *)
-          (compose_subst new_subst subst) success failure
+        match_terms (subst_in_terms (compose_subst new_subst subst) new_tail) (* New goals *)
+          (compose_subst subst new_subst) success failure
 
 (* Main driver *)
 

@@ -1,10 +1,7 @@
 open Common
 open Unify
 open Print
-
-(* List of currently valid rules. *)
-
-let rules = ref []
+open Builtin
 
 (* Instantiate rule with new variables. *)
 
@@ -40,12 +37,15 @@ let rec match_terms goals subst success failure =
            match_terms gtail subst1 success failure1)
         failure
 and match_term term subst success failure =
-  let rec match_rule_list = function
-    | [] -> failure ()
-    | rhead :: rtail ->
-      match_term_single_rule rhead term subst success
-        (function () -> match_rule_list rtail)
-  in match_rule_list !rules
+  if is_builtin_term term
+  then execute_builtin term subst success failure
+  else
+    let rec match_rule_list = function
+      | [] -> failure ()
+      | rhead :: rtail ->
+        match_term_single_rule rhead term subst success
+          (function () -> match_rule_list rtail)
+    in match_rule_list !rules
 and match_term_single_rule rule term subst success failure =
   let new_head, new_tail = fresh_rule rule in
     debug ("Fresh rule: " ^ (string_of_rule (new_head, new_tail)));

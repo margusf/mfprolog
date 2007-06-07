@@ -55,3 +55,18 @@ let debug s =
   if !debug_enabled
   then print_endline ("DEBUG: " ^ s)
   else ()
+
+(* Exceptions. *)
+
+exception Internal_error of string
+
+(* Global variables. *)
+
+(* List of currently valid rules. *)
+
+let rules = ref [Atom "x", [Atom "x"]]  (* Just to help type inference. *)
+
+(* Total failure condition, called by cut and fail. *)
+
+let global_failure = ref (function () -> ())
+

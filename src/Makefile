@@ -1,6 +1,6 @@
-OBJECTS = common.cmo unify.cmo print.cmo inference.cmo
+OBJECTS = common.cmo unify.cmo print.cmo builtin.cmo inference.cmo
 
-TESTS = test_unify test_inference
+TESTS = test_unify test_inference test_builtin
 
 all: mfprolog
 
@@ -26,3 +26,6 @@ test_unify: $(OBJECTS) test_unify.ml
 
 test_inference: $(OBJECTS) test_inference.ml
 	ocamlc -o $@ $(OBJECTS) test_inference.ml
+
+test_builtin: $(OBJECTS) test_builtin.ml
+	ocamlc -o $@ $(OBJECTS) test_builtin.ml

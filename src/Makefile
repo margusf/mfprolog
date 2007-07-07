@@ -8,7 +8,7 @@ OCAMLUNIT = $(shell ocamlfind query oUnit)
 all: mfprolog
 
 repl: all repl_helper.cmo
-	rlwrap ocaml -I -I /usr/lib/ocaml/3.09.2 $(OCAMLUNIT)/oUnit.cma $(OBJECTS) repl_helper.cmo
+	rlwrap ocaml $(OBJECTS) repl_helper.cmo
 
 clean:
 	rm -f *.cmo *.cmi grammar.ml grammar.mli lexer.ml mfprolog test_suite

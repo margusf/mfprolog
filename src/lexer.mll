@@ -11,8 +11,8 @@ let identifier = alnum | '_'
 
 rule token = parse
 	| [' ' '\t' '\n'] { token lexbuf }
-	| lowercase identifier+ as a { LATOM a }
-	| uppercase identifier+ as v { LVARIABLE v }
+	| lowercase identifier* as a { LATOM a }
+	| uppercase identifier* as v { LVARIABLE v }
 	| '.' { LDOT }
 	| '!' { LCUT }
 	| ":-" { LIMPLIES }

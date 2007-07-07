@@ -1,5 +1,10 @@
 %{
 open Common;;
+
+(* Convert list into cons term. *)
+let rec make_cons terminator = function
+	| [] -> terminator
+	| head :: tail -> Complex ("cons", [head; make_cons terminator tail])
 %}
 
 %token <string> LATOM
@@ -30,7 +35,10 @@ term:
 	| LVARIABLE { Var $1 }
 	| LATOM LOPENPAREN term_list LCLOSEPAREN { Complex ($1, $3) }
 	| LCUT { Complex ("cut", []) }
-	| LOPENBRACKET term LHEADTAIL term LCLOSEBRACKET { Complex ("cons", [$2;  $4]) }
+	/* Different options for lists. */
+	| LOPENBRACKET LCLOSEBRACKET { Atom "nil" }
+	| LOPENBRACKET term_list LCLOSEBRACKET { make_cons (Atom "nil") $2 }
+	| LOPENBRACKET term_list LHEADTAIL term LCLOSEBRACKET { make_cons $4 $2 }
 ;
 
 term_list:

@@ -33,6 +33,8 @@ and string_of_list car cdr =
 let string_of_terms separator terms =
   String.concat separator (List.map string_of_term terms)
 
+let string_of_term_list = string_of_terms ", "
+
 let string_of_rule (rulehead, ruletail) =
   (string_of_term rulehead) ^
   if ruletail = []

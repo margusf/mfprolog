@@ -1,23 +1,24 @@
 OBJECTS = common.cmo unify.cmo print.cmo builtin.cmo inference.cmo \
 		grammar.cmo lexer.cmo
 
-TESTS = test_unify test_inference test_builtin test_parser
+UNIT_TESTS = test_parser.ml
 
 all: mfprolog
 
-repl: all $(TESTS)
+repl: all $(UNIT_TESTS)
 	rlwrap ocaml $(OBJECTS)
 
 clean:
-	rm -f *.cmo *.cmi grammar.ml grammar.mli lexer.ml mfprolog $(TESTS)
+	rm -f *.cmo *.cmi grammar.ml grammar.mli lexer.ml mfprolog test_suite
 
 re: clean all
 
-check: all $(TESTS)
-	for i in $(TESTS) ;\
-	do \
-		ocamlrun $$i || exit 1 ;\
-	done
+check: test_suite
+	./test_suite -verbose
+
+test_suite: $(OBJECTS) $(UNIT_TESTS) test_suite.ml
+	ocamlfind ocamlc -o test_suite -package oUnit -linkpkg \
+		$(OBJECTS) $(UNIT_TESTS) test_suite.ml
 
 mfprolog: $(OBJECTS) mfprolog.cmo
 	ocamlc -o mfprolog $(OBJECTS) mfprolog.cmo
@@ -31,15 +32,3 @@ grammar.ml: grammar.mly
 
 lexer.ml: lexer.mll
 	ocamllex lexer.mll
-
-test_unify: $(OBJECTS) test_unify.ml
-	ocamlc -o $@ $(OBJECTS) test_unify.ml
-
-test_inference: $(OBJECTS) test_inference.ml
-	ocamlc -o $@ $(OBJECTS) test_inference.ml
-
-test_builtin: $(OBJECTS) test_builtin.ml
-	ocamlc -o $@ $(OBJECTS) test_builtin.ml
-
-test_parser: $(OBJECTS) test_parser.ml
-	ocamlc -o $@ $(OBJECTS) test_parser.ml

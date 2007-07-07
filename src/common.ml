@@ -3,7 +3,7 @@
 type term = Atom of string | Var of string | Complex of string * term list
 
 (* Rule is head and list of conditions *)
-type rule = string * string list
+type rule = term * term list
 
 (* Variable substitutions. *)
 

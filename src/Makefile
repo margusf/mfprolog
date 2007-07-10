@@ -1,7 +1,7 @@
 OBJECTS = common.cmo unify.cmo print.cmo builtin.cmo inference.cmo \
 		grammar.cmo lexer.cmo
 
-UNIT_TESTS = test_parser.ml
+UNIT_TESTS = test_helper.ml test_parser.ml test_unify.ml
 
 OCAMLUNIT = $(shell ocamlfind query oUnit)
 

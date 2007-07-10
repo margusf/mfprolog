@@ -1,47 +1,20 @@
+open OUnit
 open Common
-open Print
 open Unify
+open Test_helper
 
-exception Assert_failed of string
+let pattern1 = parse_term "boo(X, Y, foo(aa, oioi(bb, cc), X))"
+and pattern2 = parse_term "boo(A, urra(dd, ss), foo(aa, B, tt))"
+let Some subst = unify pattern1 pattern2
+let do_assert var val_str =
+  let expected_val = parse_term val_str in
+    assert_equal ~printer:Print.string_of_term
+        ~msg:("Matching failed for variable " ^ var)
+        (subst var) expected_val
+let test_unify _ =
+  do_assert "X" "tt.";
+  do_assert "Y" "urra(dd, ss)";
+  do_assert "A" "tt.";
+  do_assert "B" "oioi(bb, cc)"
 
-let assert_var subst var value =
-  let subst_res = subst var in
-    print_endline (var ^ " -> " ^ (string_of_term subst_res));
-    if subst_res <> value
-    then raise (Assert_failed ("Check failed for variable " ^ var))
-    else ()
-;;
-
-let pattern1 =
-  Complex ("boo",
-           [Var "X";
-            Var "Y";
-            Complex ("foo",
-                     [Atom "aa";
-                      Complex ("oioi",
-                               [Atom "bb"; Atom "cc"]);
-                      Var "X"])])
-and pattern2 =
-  Complex ("boo",
-           [Var "A";
-            Complex ("urra",
-                     [Atom "dd";
-                      Atom "ss"]);
-            Complex ("foo",
-                     [Atom "aa";
-                      Var "B";
-                      Atom "tt"])])
-in
-
-print_endline "\n\nTesting unification engine";
-
-print_endline ("pattern1 = " ^ (string_of_term pattern1));
-print_endline ("pattern2 = " ^ (string_of_term pattern2));
-
-let Some subst =  unify pattern1 pattern2 in
-let do_assert = assert_var subst in
-do_assert "X" (Atom "tt");
-do_assert "Y" (Complex ("urra", [Atom "dd"; Atom "ss"]));
-do_assert "A" (Atom "tt");
-do_assert "B" (Complex ("oioi", [Atom "bb"; Atom "cc"]))
-;;
+let suite = "Unify" >::: [("test_unify" >:: test_unify)]

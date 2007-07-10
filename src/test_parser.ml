@@ -1,15 +1,6 @@
 open OUnit
 open Common
-
-let parse_rule s =
-  let lexbuf = Lexing.from_string s in
-    Grammar.rule Lexer.token lexbuf
-and parse_conjunct s =
-  let lexbuf = Lexing.from_string s in
-    Grammar.conjunct Lexer.token lexbuf
-
-let cons x y = Complex ("cons", [x; y])
-and nil = Atom "nil"
+open Test_helper
 
 let try_conjunct =
   let rec iter i = function
@@ -17,8 +8,8 @@ let try_conjunct =
     | (str, parsed) :: tail ->
       let con = parse_conjunct str in
         assert_equal ~printer:Print.string_of_term_list
-        ~msg:("Conjunct parsing failed for item " ^ (string_of_int i))
-        parsed con;
+            ~msg:("Conjunct parsing failed for item " ^ (string_of_int i))
+            parsed con;
         iter (i + 1) tail in
   iter 1
 

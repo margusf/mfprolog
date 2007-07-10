@@ -20,9 +20,10 @@ let rec make_cons terminator = function
 %token LHEADTAIL
 %token LCOMMA
 
-%start rule conjunct
+%start rule conjunct term
 %type <Common.rule> rule
 %type <Common.term list> conjunct
+%type <Common.term> term
 
 %%
 

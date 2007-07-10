@@ -8,6 +8,9 @@ and parse_conjunct s =
   let lexbuf = Lexing.from_string s in
     Grammar.conjunct Lexer.token lexbuf
 
+let cons x y = Complex ("cons", [x; y])
+and nil = Atom "nil"
+
 let try_conjunct =
   let rec iter i = function
     | [] -> ()
@@ -37,25 +40,31 @@ let test_parse_lists _ =
   try_conjunct [
     "[].",
     [Atom "nil"];
+
     "[a], [V], [term(a)].",
-    [Complex ("cons", [Atom "a"; Atom "nil"]);
-     Complex ("cons", [Var "V"; Atom "nil"]);
-     Complex ("cons", [Complex ("term", [Atom "a"]);
-                       Atom "nil"])];
+    [cons (Atom "a") nil;
+     cons (Var "V") nil;
+     cons (Complex ("term", [Atom "a"])) (Atom "nil")];
+
     "[a | b].",
-    [Complex ("cons", [Atom "a";
-                       Atom "b"])];
+    [cons (Atom "a") (Atom "b")];
+
     "[a, b, c].",
-    [Complex ("cons", [Atom "a";
-                       Complex ("cons",
-                                [Atom "b";
-                                 Complex ("cons",
-                                          [Atom "c"; Atom "nil"])])])];
-    "[a, b | c].",
-    [Complex ("cons", [Atom "a";
-                       Complex ("cons",
-                                [Atom "b";
-                                 Atom "c"])])]]
+    [cons (Atom "a")
+       (cons (Atom "b")
+          (cons (Atom "c") nil))];
+
+      "[a, b | c].",
+    [cons (Atom "a")
+       (cons (Atom "b") (Atom "c"))];
+
+    "[a, [b | c], [d]].",
+    [cons (Atom "a")
+       (cons 
+          (cons (Atom "b") (Atom "c"))
+          (cons
+             (cons (Atom "d") nil)
+             nil))]]
 
 let test_parse_rules _ =
   assert_bool "surprise!" true

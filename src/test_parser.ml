@@ -67,7 +67,12 @@ let test_parse_lists _ =
              nil))]]
 
 let test_parse_rules _ =
-  assert_bool "surprise!" true
+  let parsed = parse_rule "grandparent(Child, Gramps) :- parent(Child, X), parent(X, Gramps)."
+  and model = Complex ("grandparent", [Var "Child"; Var "Gramps"]),
+              [Complex ("parent", [Var "Child"; Var "X"]);
+               Complex ("parent", [Var "X"; Var "Gramps"])] in
+  assert_equal ~printer:Print.string_of_rule
+        ~msg:"Rule parsing failed" parsed model
 
 let test_parse_specials _ =
   try_conjunct [

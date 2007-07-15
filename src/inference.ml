@@ -34,7 +34,7 @@ let rec match_terms goals subst success failure =
     | ghead :: gtail ->
       match_term ghead subst
         (fun subst1 failure1 ->
-           match_terms gtail subst1 success failure1)
+           match_terms (subst_in_terms subst1 gtail) subst1 success failure1)
         failure
 and match_term term subst success failure =
   if is_builtin_term term

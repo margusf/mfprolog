@@ -1,30 +1,23 @@
 open Common
 open Print
 open Inference
-;;
-print_endline "\n\nTesting builtin functions";
-(*enable_debug ();*)
+open Test_helper
+open OUnit
  
-rules := [
-  (* Simple inference. *)
-  Complex ("test_print", [Var "X"]),
-  [Complex ("print", [Var "X"])]];;
+let ruleset = parse_rules [
+  (* print *)
+  "test_print(X) :- print(X).";
+  (* cut *)
+  "stuff(grr).";
+  "test_cut(boo).";
+  "test_cut(X) :- stuff(X), !.";
+  "test_cut(foo)."]
 
-let goals = [
-  Complex ("test_print",
-           [Complex ("stuff",
-                     [Atom "aa"; Atom "bb"])]);
-  Complex ("test_print",
-           [Complex ("cons",
-                     [Atom "aa";
-                      Complex ("cons",
-                               [Atom "bb"; Atom "nil"])])]);
-  Complex ("test_print",
-           [Complex ("cons",
-                     [Atom "aa";
-                      Complex ("cons",
-                               [Atom "bb"; Atom "cc"])])])]
-and test_goal goal =
-  print_endline ("\nSolving goal " ^ (string_of_term goal));
-  solve [goal] in
-  List.iter test_goal goals;;
+let tests = add_rules ruleset [
+  "test_print(some(complex(term))).",
+  ["test_print(some(complex(term)))."];
+  "test_cut(A).", ["test_cut(boo).";
+                   "test_cut(grr)."]]
+
+let suite = "Builtin" >:::
+ [("test_builtin" >:: (fun () -> run_tests tests))]

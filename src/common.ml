@@ -60,6 +60,8 @@ let debug s =
 
 exception Internal_error of string
 
+exception Prolog_error of string
+
 (* Global variables. *)
 
 (* List of currently valid rules. *)

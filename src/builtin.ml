@@ -15,10 +15,20 @@ let builtin_print args subst success failure =
      | _ -> raise (Internal_error "Invalid number of arguments"));
   success subst failure
 
+let builtin_consult args subst success failure =
+  match args with
+    | [Atom filename] ->
+    Loading.consult_file filename;
+    success subst failure
+    | t -> 
+      let err = "Invalid file name: " ^ (string_of_term_list t) in
+         raise (Prolog_error err)
+
 let builtin_funs = [
   "cut", 0, builtin_cut;
   "fail", 0, builtin_fail;
-  "print", 1, builtin_print];;
+  "print", 1, builtin_print;
+  "consult", 1, builtin_consult];;
 
 let builtin_matches name arity =
   function fn, farity, _ -> fn = name && farity = arity

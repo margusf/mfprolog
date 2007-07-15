@@ -1,1 +1,2 @@
-print_endline "mfprolog!";;
+print_endline "mfprolog";
+Repl.run_repl ();;

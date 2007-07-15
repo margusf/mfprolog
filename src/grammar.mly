@@ -19,11 +19,13 @@ let rec make_cons terminator = function
 %token LCLOSEBRACKET
 %token LHEADTAIL
 %token LCOMMA
+%token LEOF
 
-%start rule conjunct term
+%start rule conjunct term rulelist
 %type <Common.rule> rule
 %type <Common.term list> conjunct
 %type <Common.term> term
+%type <Common.rule list> rulelist
 
 %%
 
@@ -50,4 +52,14 @@ term_list:
 rule:
 	| term LDOT { $1, [] }
 	| term LIMPLIES term_list LDOT { $1, $3 }
+;
+
+rules:
+	| rule { [$1] }
+	| rules rule { $1 @ [$2] }  /* TODO: do not use append */
+;
+
+rulelist:
+	| LEOF { [] }
+	| rules LEOF { $1 }  
 ;

@@ -1,6 +1,5 @@
 {
 open Grammar
-exception Eof
 }
 
 let lowercase = ['a'-'z']
@@ -22,3 +21,4 @@ rule token = parse
 	| '[' { LOPENBRACKET }
 	| ']' { LCLOSEBRACKET }
 	| '|' { LHEADTAIL }
+	| eof { LEOF }

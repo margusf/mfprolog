@@ -22,7 +22,7 @@ check: test_suite
 	./test_suite -verbose
 
 test_suite: $(OBJECTS) $(UNIT_TESTS) test_suite.ml
-	ocamlfind ocamlc -o test_suite -package oUnit -linkpkg \
+	ocamlfind $(OCAMLC) -o test_suite -package oUnit -linkpkg \
 		$(OBJECTS) $(UNIT_TESTS) test_suite.ml
 
 mfprolog: $(OBJECTS) mfprolog.cmo

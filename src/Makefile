@@ -6,6 +6,8 @@ UNIT_TESTS = test_helper.ml test_parser.ml test_unify.ml \
 
 OCAMLUNIT = $(shell ocamlfind query oUnit)
 
+OCAMLC = ocamlc -dtypes
+
 all: mfprolog
 
 repl: all repl_helper.cmo
@@ -24,14 +26,14 @@ test_suite: $(OBJECTS) $(UNIT_TESTS) test_suite.ml
 		$(OBJECTS) $(UNIT_TESTS) test_suite.ml
 
 mfprolog: $(OBJECTS) mfprolog.cmo
-	ocamlc -o mfprolog $(OBJECTS) mfprolog.cmo
+	$(OCAMLC) -o mfprolog $(OBJECTS) mfprolog.cmo
 
 %.cmo: %.ml
-	ocamlc -c -o $@ $<
+	$(OCAMLC) -c -o $@ $<
 
 grammar.ml: grammar.mly
 	ocamlyacc grammar.mly ;\
-	ocamlc -c grammar.mli
+	$(OCAMLC) -c grammar.mli
 
 lexer.ml: lexer.mll
 	ocamllex lexer.mll

@@ -12,7 +12,7 @@ rule token = parse
 	| [' ' '\t' '\n'] { token lexbuf }
 	| "is" { LIS } (* This must precede definition for atom. *)
 	| lowercase identifier* as a { LATOM a }
-	| uppercase identifier* as v { LVARIABLE v }
+	| (uppercase | '_') identifier* as v { LVARIABLE v }
 	| number+ as n { LINTEGER (int_of_string n) }
 	| '.' { LDOT }
 	| '!' { LCUT }
@@ -27,4 +27,8 @@ rule token = parse
 	| '-' { LMINUS }
 	| '*' { LMULTIPLY }
 	| '/' { LDIVIDE }
+	| '<' { LLESSTHAN }
+	| '>' { LGREATERTHAN }
+	| "=:=" { LARITHEQUALS }
+	| "=/=" { LARITHNOTEQUALS }
 	| eof { LEOF }

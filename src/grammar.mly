@@ -29,8 +29,13 @@ let make_op op arg1 arg2 =
 %token LMULTIPLY
 %token LDIVIDE
 %token LIS
+%token LLESSTHAN
+%token LGREATERTHAN
+%token LARITHEQUALS
+%token LARITHNOTEQUALS
 
-%nonassoc LIS
+
+%nonassoc LIS LLESSTHAN LGREATERTHAN LARITHEQUALS LARITHNOTEQUALS
 %left LPLUS LMINUS
 %left LMULTIPLY LDIVIDE
 
@@ -56,6 +61,7 @@ term:
 	| LOPENBRACKET term_list LHEADTAIL term LCLOSEBRACKET { make_cons $4 $2 }
 	/* Arithmetic stuff */
 	| arithmetic_expr { $1 }
+	| logical_expr { $1 }
 	| number LIS number { make_op "is" $1 $3 }
 	| variable LIS arithmetic_expr { make_op "is" $1 $3 }
 ;
@@ -85,6 +91,14 @@ arithmetic_expr:
 	| arithmetic_expr LMULTIPLY arithmetic_expr { make_op "*" $1 $3 }
 	| arithmetic_expr LDIVIDE arithmetic_expr { make_op "/" $1 $3 }
 	| LOPENPAREN arithmetic_expr LCLOSEPAREN { $2 }
+;
+
+logical_expr:
+	  arithmetic_expr LLESSTHAN arithmetic_expr { make_op "<" $1 $3 }
+	| arithmetic_expr LGREATERTHAN arithmetic_expr { make_op ">" $1 $3 }
+	| arithmetic_expr LARITHEQUALS arithmetic_expr { make_op "=:=" $1 $3 }
+	| arithmetic_expr LARITHNOTEQUALS arithmetic_expr { make_op "=/=" $1 $3 }
+	| LOPENPAREN logical_expr LCLOSEPAREN { $2 }
 ;
 
 rule:

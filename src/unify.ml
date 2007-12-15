@@ -5,6 +5,7 @@ open Common
 let rec unify term1 term2 =
   match term1, term2 with
     | Atom a1, Atom a2 -> if a1 = a2 then Some empty_subst else None
+    | Integer i1, Integer i2 -> if i1 = i2 then Some empty_subst else None
     | Var v1, (Var v2 as t2) -> Some (unit_subst v1 t2)
     | Var v1, t2 when not (term_contains_var t2 v1) -> Some (unit_subst v1 t2)
     | Var v1, _ -> None

@@ -1,8 +1,8 @@
 OBJECTS = common.cmo unify.cmo print.cmo grammar.cmo lexer.cmo loading.cmo \
-		plmath.cmo builtin.cmo inference.cmo repl.cmo 
+		arithmetic.cmo builtin.cmo inference.cmo repl.cmo 
 
 UNIT_TESTS = test_helper.ml test_parser.ml test_unify.ml \
-		test_inference.ml test_builtin.ml
+		test_inference.ml test_builtin.ml test_arithmetic.ml
 
 OCAMLUNIT = $(shell ocamlfind query oUnit)
 

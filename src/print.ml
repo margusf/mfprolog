@@ -10,6 +10,7 @@ let is_list_cdr = function
 
 let rec string_of_term = function
   | Atom a -> a
+	| Integer i -> string_of_int i
   | Var v -> "{" ^ v ^ "}"
   (* Some special cases. *)
   | Complex ("cut", []) -> "!"

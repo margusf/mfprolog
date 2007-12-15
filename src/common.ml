@@ -1,6 +1,10 @@
 (* Data type for terms. *)
 
-type term = Atom of string | Var of string | Complex of string * term list
+type term =
+	| Atom of string
+	| Integer of int
+	| Var of string
+	| Complex of string * term list
 
 (* Rule is head and list of conditions *)
 type rule = term * term list
@@ -14,6 +18,7 @@ let unit_subst id new_term =
 
 let rec subst_in_term subst = function
   | Atom a -> Atom a
+	| Integer i -> Integer i
   | Var v -> apply_subst subst v
   | Complex (func, args) ->
     Complex (func, List.map (subst_in_term subst) args)
@@ -27,6 +32,7 @@ let compose_subst s1 s2 =
 
 let rec all_term_vars = function
   | Atom _ -> []
+	| Integer _ -> []
   | Var v -> [v]
   | Complex (func, args) -> List.flatten (List.map all_term_vars args)
 

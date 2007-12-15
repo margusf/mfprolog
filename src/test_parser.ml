@@ -3,7 +3,8 @@ open Common
 open Test_helper
 
 let try_conjunct =
-  let rec iter i = function
+  let rec iter i t = 
+		match t with
     | [] -> ()
     | (str, parsed) :: tail ->
       let con = parse_conjunct str in
@@ -11,7 +12,7 @@ let try_conjunct =
             ~msg:("Conjunct parsing failed for item " ^ (string_of_int i))
             parsed con;
         iter (i + 1) tail in
-  iter 1
+  	iter 1
 
 let test_parse_terms _ =
   try_conjunct [
@@ -21,11 +22,36 @@ let test_parse_terms _ =
     [Var "X"; Var "AA"; Var "AA_BB"; Var "Aabee"; Var "Aa_bee"];
     "simple_term(a, b, c).",
     [Complex ("simple_term", [Atom "a"; Atom "b"; Atom "c"])];
+		"1, asi(22, 33).",
+		[Integer 1; Complex ("asi", [Integer 22; Integer 33])];
     "recursive(stuff, inside(other, Stuff)).",
     [Complex ("recursive",
               [Atom "stuff"; 
                Complex ("inside",
                         [Atom "other"; Var "Stuff"])])]]
+
+let test_parse_arithmetic _ =
+  try_conjunct [
+    "1, 666.",
+    [Integer 1; Integer 666];
+    "1 + 2, 1 + X, X + Y + Z.",
+    [Complex ("+", [Integer 1; Integer 2]);
+		 Complex ("+", [Integer 1; Var "X"]);
+		 Complex ("+", [Complex ("+", [Var "X"; Var "Y"]); Var "Z"])];
+    "1 - 2, 1 - X, X - Y + Z.",
+    [Complex ("-", [Integer 1; Integer 2]);
+		 Complex ("-", [Integer 1; Var "X"]);
+		 Complex ("+", [Complex ("-", [Var "X"; Var "Y"]); Var "Z"])];
+    "1 * 2, 1 / X, X * Y / Z.",
+    [Complex ("*", [Integer 1; Integer 2]);
+		 Complex ("/", [Integer 1; Var "X"]);
+		 Complex ("/", [Complex ("*", [Var "X"; Var "Y"]); Var "Z"])];
+		"1 * 2 + 3 / (4 + 5).",
+		[Complex ("+", [Complex ("*", [Integer 1; Integer 2]);
+		                Complex ("/", [Integer 3;
+										               Complex ("+", [Integer 4; Integer 5])])])];
+		"1 is 2.",
+		[Complex ("is", [Integer 1; Integer 2])]]
 
 let test_parse_lists _ =
   try_conjunct [
@@ -71,6 +97,7 @@ let test_parse_specials _ =
 
 let suite = "Parser" >::: [
   ("test_parse_terms" >:: test_parse_terms);
+  ("test_parse_arithmetic" >:: test_parse_arithmetic);
   ("test_parse_lists" >:: test_parse_lists);
   ("test_parse_rules" >:: test_parse_rules);
   ("test_parse_specials" >:: test_parse_specials)]

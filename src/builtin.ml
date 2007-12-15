@@ -18,8 +18,8 @@ let builtin_print args subst success failure =
 let builtin_consult args subst success failure =
   match args with
     | [Atom filename] ->
-    Loading.consult_file filename;
-    success subst failure
+    	Loading.consult_file filename;
+ 		  success subst failure
     | t -> 
       let err = "Invalid file name: " ^ (string_of_term_list t) in
          raise (Prolog_error err)
@@ -28,7 +28,8 @@ let builtin_funs = [
   "cut", 0, builtin_cut;
   "fail", 0, builtin_fail;
   "print", 1, builtin_print;
-  "consult", 1, builtin_consult];;
+  "consult", 1, builtin_consult;
+	"is", 2, Plmath.builtin_is];;
 
 let builtin_matches name arity =
   function fn, farity, _ -> fn = name && farity = arity

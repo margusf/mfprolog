@@ -10,8 +10,10 @@ let identifier = alnum | '_'
 
 rule token = parse
 	| [' ' '\t' '\n'] { token lexbuf }
+	| "is" { LIS } (* This must precede definition for atom. *)
 	| lowercase identifier* as a { LATOM a }
 	| uppercase identifier* as v { LVARIABLE v }
+	| number+ as n { LINTEGER (int_of_string n) }
 	| '.' { LDOT }
 	| '!' { LCUT }
 	| ":-" { LIMPLIES }
@@ -21,4 +23,8 @@ rule token = parse
 	| '[' { LOPENBRACKET }
 	| ']' { LCLOSEBRACKET }
 	| '|' { LHEADTAIL }
+	| '+' { LPLUS }
+	| '-' { LMINUS }
+	| '*' { LMULTIPLY }
+	| '/' { LDIVIDE }
 	| eof { LEOF }

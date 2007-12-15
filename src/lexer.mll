@@ -31,4 +31,7 @@ rule token = parse
 	| '>' { LGREATERTHAN }
 	| "=:=" { LARITHEQUALS }
 	| "=/=" { LARITHNOTEQUALS }
+	| '=' { LUNIFY }
+	| "==" { LEQUALS }
+	| "\\==" { LNOTEQUALS }
 	| eof { LEOF }

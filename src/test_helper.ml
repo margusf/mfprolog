@@ -12,7 +12,7 @@ let parse_conjunct s =
     Grammar.conjunct Lexer.token lexbuf
 let parse_term s =
   let lexbuf = Lexing.from_string s in
-    Grammar.term Lexer.token lexbuf
+    Grammar.top_term Lexer.token lexbuf
 
 let cons x y = Complex ("cons", [x; y])
 and nil = Atom "nil"

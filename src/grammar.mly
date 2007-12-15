@@ -33,22 +33,31 @@ let make_op op arg1 arg2 =
 %token LGREATERTHAN
 %token LARITHEQUALS
 %token LARITHNOTEQUALS
+%token LUNIFY
+%token LEQUALS
+%token LNOTEQUALS
 
 
-%nonassoc LIS LLESSTHAN LGREATERTHAN LARITHEQUALS LARITHNOTEQUALS
+%nonassoc LIS LLESSTHAN LGREATERTHAN LARITHEQUALS LARITHNOTEQUALS LUNIFY
+%nonassoc LEQUALS LNOTEQUALS
 %left LPLUS LMINUS
 %left LMULTIPLY LDIVIDE
 
-%start rule conjunct term rulelist
+%start rule conjunct top_term rulelist
 %type <Common.rule> rule
 %type <Common.term list> conjunct
-%type <Common.term> term
+%type <Common.term> top_term
 %type <Common.rule list> rulelist
 
 %%
 
 conjunct:
 	term_list LDOT { $1 }
+;
+
+/* for parsing terms in unit tests. */
+top_term:
+	term LEOF { $1 }
 ;
 
 term:
@@ -62,8 +71,12 @@ term:
 	/* Arithmetic stuff */
 	| arithmetic_expr { $1 }
 	| logical_expr { $1 }
-	| number LIS number { make_op "is" $1 $3 }
+	| number LIS arithmetic_expr { make_op "is" $1 $3 }
 	| variable LIS arithmetic_expr { make_op "is" $1 $3 }
+	/* Various prolog predefined operators. */
+	| term LUNIFY term { make_op "=" $1 $3 } 
+	| term LEQUALS term { make_op "==" $1 $3 } 
+	| term LNOTEQUALS term { make_op "\\==" $1 $3 } 
 ;
 
 atom:

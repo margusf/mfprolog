@@ -57,7 +57,12 @@ let test_parse_arithmetic _ =
 		"aa(bee, X = tsee) == 1 + KALA.",
 		[Complex ("==", [Complex ("aa", [Atom "bee";
 		                                 Complex ("=", [Var "X"; Atom "tsee"])]);
-		                 Complex ("+", [Integer 1; Var "KALA"])])]]
+		                 Complex ("+", [Integer 1; Var "KALA"])])];
+										
+		(* ; operator is right-associative. *)
+		"1; 2; 3.", [Complex (";", [Integer 1;
+		                           Complex (";", [Integer 2; Integer 3])])]
+]
 
 let test_parse_lists _ =
   try_conjunct [

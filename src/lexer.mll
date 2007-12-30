@@ -18,6 +18,7 @@ rule token = parse
 	| '!' { LCUT }
 	| ":-" { LIMPLIES }
 	| ',' { LCOMMA }
+	| ';' { LSEMICOLON }
 	| '(' { LOPENPAREN }
 	| ')' { LCLOSEPAREN }
 	| '[' { LOPENBRACKET }

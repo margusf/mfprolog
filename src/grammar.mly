@@ -18,6 +18,7 @@ let make_op op arg1 arg2 =
 %token LCLOSEBRACKET
 %token LHEADTAIL
 %token LCOMMA
+%token LSEMICOLON
 %token LEOF
 %token LPLUS
 %token LMINUS
@@ -42,6 +43,7 @@ let make_op op arg1 arg2 =
 %nonassoc LIS LLESSTHAN LGREATERTHAN LLESSEREQUALS LLGREATEREQUALS
 	LARITHEQUALS LARITHNOTEQUALS
 	LTERMLESSTHAN LTERMGREATERTHAN LTERMLESSEREQUALS LTERMLGREATEREQUALS LUNIFY
+%right LSEMICOLON
 %nonassoc LEQUALS LNOTEQUALS
 %left LPLUS LMINUS
 %left LMULTIPLY LDIVIDE
@@ -78,6 +80,7 @@ term:
 	| number LIS arithmetic_expr { make_op "is" $1 $3 }
 	| variable LIS arithmetic_expr { make_op "is" $1 $3 }
 	/* Various prolog predefined operators. */
+	| term LSEMICOLON term { make_op ";" $1 $3 } 
 	| term LUNIFY term { make_op "=" $1 $3 } 
 	| term LEQUALS term { make_op "==" $1 $3 } 
 	| term LNOTEQUALS term { make_op "\\==" $1 $3 } 

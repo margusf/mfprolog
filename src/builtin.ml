@@ -29,6 +29,9 @@ let builtin_unify [left; right] subst success failure =
 		| Some new_subst -> success (compose_subst subst new_subst) failure
 		| None -> failure ()
 
+let builtin_disjunction args subst success failure =
+	success subst failure
+
 let builtin_funs = [
   "cut", 0, builtin_cut;
   "fail", 0, builtin_fail;
@@ -48,6 +51,7 @@ let builtin_funs = [
 	"@>=", 2, Compare.builtin_compare (( <= ) 0);
 	"@<", 2, Compare.builtin_compare (( > ) 0);
 	"@=<", 2, Compare.builtin_compare (( >= ) 0);
+	";", 2, builtin_disjunction;
 ]
 
 let builtin_matches name arity =

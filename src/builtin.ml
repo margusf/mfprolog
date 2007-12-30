@@ -35,6 +35,10 @@ let builtin_funs = [
   "print", 1, builtin_print;
   "consult", 1, builtin_consult;
   "is", 2, Arithmetic.builtin_is;
+  "=:=", 2, Arithmetic.builtin_comparison ( = );
+  "=\\=", 2, Arithmetic.builtin_comparison ( != );
+  ">", 2, Arithmetic.builtin_comparison ( > );
+  "<", 2, Arithmetic.builtin_comparison ( < );
   "=", 2, builtin_unify]
 
 let builtin_matches name arity =

@@ -110,7 +110,7 @@ logical_expr:
 	  arithmetic_expr LLESSTHAN arithmetic_expr { make_op "<" $1 $3 }
 	| arithmetic_expr LGREATERTHAN arithmetic_expr { make_op ">" $1 $3 }
 	| arithmetic_expr LARITHEQUALS arithmetic_expr { make_op "=:=" $1 $3 }
-	| arithmetic_expr LARITHNOTEQUALS arithmetic_expr { make_op "=/=" $1 $3 }
+	| arithmetic_expr LARITHNOTEQUALS arithmetic_expr { make_op "=\\=" $1 $3 }
 	| LOPENPAREN logical_expr LCLOSEPAREN { $2 }
 ;
 

@@ -30,7 +30,7 @@ rule token = parse
 	| '<' { LLESSTHAN }
 	| '>' { LGREATERTHAN }
 	| "=:=" { LARITHEQUALS }
-	| "=/=" { LARITHNOTEQUALS }
+	| "=\\=" { LARITHNOTEQUALS }
 	| '=' { LUNIFY }
 	| "==" { LEQUALS }
 	| "\\==" { LNOTEQUALS }

@@ -18,7 +18,8 @@ let rec term_compare t1 t2 =
 	in
 		
 		match t1, t2 with
-			(* TODO: prolog spec says, order by age (older variable is smaller). *)
+			(* Order of variables is implementation-dependent.
+			   We use alphabetical order *)
 			| Var v1, Var v2 -> compare v1 v2
 			| Var _, _ -> -1
 			| _, Var _ -> 1

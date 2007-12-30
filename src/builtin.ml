@@ -39,7 +39,8 @@ let builtin_funs = [
   "=\\=", 2, Arithmetic.builtin_comparison ( != );
   ">", 2, Arithmetic.builtin_comparison ( > );
   "<", 2, Arithmetic.builtin_comparison ( < );
-  "=", 2, builtin_unify]
+  "=", 2, builtin_unify;
+]
 
 let builtin_matches name arity =
   function fn, farity, _ -> fn = name && farity = arity

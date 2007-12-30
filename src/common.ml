@@ -58,14 +58,6 @@ let get_all_query_results subst goals =
 		let values = List.map output_var vars in
 			List.sort (fun (var1, val1) (var2, val2) -> compare var1 var2) values
 
-(* Utility functions *)
-(* Convert list into cons term. *)
-let rec make_cons terminator = function
-	| [] -> terminator
-	| head :: tail -> Complex ("cons", [head; make_cons terminator tail])
-
-let make_list = make_cons (Atom "nil")
-
 (* Debugging *)
 
 let debug_enabled = ref false

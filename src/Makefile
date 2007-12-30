@@ -1,4 +1,4 @@
-OBJECTS = common.cmo unify.cmo print.cmo grammar.cmo lexer.cmo loading.cmo \
+OBJECTS = common.cmo utils.cmo unify.cmo print.cmo grammar.cmo lexer.cmo loading.cmo \
 		arithmetic.cmo builtin.cmo inference.cmo repl.cmo 
 
 UNIT_TESTS = test_helper.ml test_parser.ml test_unify.ml \

@@ -25,15 +25,23 @@ let make_op op arg1 arg2 =
 %token LDIVIDE
 %token LIS
 %token LLESSTHAN
+%token LLESSEREQUALS
 %token LGREATERTHAN
+%token LGREATEREQUALS
 %token LARITHEQUALS
 %token LARITHNOTEQUALS
 %token LUNIFY
 %token LEQUALS
 %token LNOTEQUALS
+%token LTERMLESSTHAN
+%token LTERMLESSEREQUALS
+%token LTERMGREATERTHAN
+%token LTERMGREATEREQUALS
 
 
-%nonassoc LIS LLESSTHAN LGREATERTHAN LARITHEQUALS LARITHNOTEQUALS LUNIFY
+%nonassoc LIS LLESSTHAN LGREATERTHAN LLESSEREQUALS LLGREATEREQUALS
+	LARITHEQUALS LARITHNOTEQUALS
+	LTERMLESSTHAN LTERMGREATERTHAN LTERMLESSEREQUALS LTERMLGREATEREQUALS LUNIFY
 %nonassoc LEQUALS LNOTEQUALS
 %left LPLUS LMINUS
 %left LMULTIPLY LDIVIDE
@@ -61,8 +69,9 @@ term:
 	| LCUT { Complex ("cut", []) }
 	/* Different options for lists. */
 	| LOPENBRACKET LCLOSEBRACKET { Atom "nil" }
-	| LOPENBRACKET term_list LCLOSEBRACKET { make_cons (Atom "nil") $2 }
-	| LOPENBRACKET term_list LHEADTAIL term LCLOSEBRACKET { make_cons $4 $2 }
+	| LOPENBRACKET term_list LCLOSEBRACKET { Utils.make_cons (Atom "nil") $2 }
+	| LOPENBRACKET term_list LHEADTAIL term LCLOSEBRACKET
+		{ Utils.make_cons $4 $2 }
 	/* Arithmetic stuff */
 	| arithmetic_expr { $1 }
 	| logical_expr { $1 }
@@ -72,6 +81,10 @@ term:
 	| term LUNIFY term { make_op "=" $1 $3 } 
 	| term LEQUALS term { make_op "==" $1 $3 } 
 	| term LNOTEQUALS term { make_op "\\==" $1 $3 } 
+	| term LTERMLESSTHAN term { make_op "@<" $1 $3 }
+	| term LTERMLESSEREQUALS term { make_op "@=<" $1 $3 }
+	| term LTERMGREATERTHAN term { make_op "@>" $1 $3 }
+	| term LTERMGREATEREQUALS term { make_op "@>=" $1 $3 }
 ;
 
 atom:
@@ -103,7 +116,9 @@ arithmetic_expr:
 
 logical_expr:
 	  arithmetic_expr LLESSTHAN arithmetic_expr { make_op "<" $1 $3 }
+	| arithmetic_expr LLESSEREQUALS arithmetic_expr { make_op "=<" $1 $3 }
 	| arithmetic_expr LGREATERTHAN arithmetic_expr { make_op ">" $1 $3 }
+	| arithmetic_expr LGREATEREQUALS arithmetic_expr { make_op ">=" $1 $3 }
 	| arithmetic_expr LARITHEQUALS arithmetic_expr { make_op "=:=" $1 $3 }
 	| arithmetic_expr LARITHNOTEQUALS arithmetic_expr { make_op "=\\=" $1 $3 }
 	| LOPENPAREN logical_expr LCLOSEPAREN { $2 }

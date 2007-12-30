@@ -28,10 +28,16 @@ rule token = parse
 	| '*' { LMULTIPLY }
 	| '/' { LDIVIDE }
 	| '<' { LLESSTHAN }
+	| "=<" { LLESSEREQUALS }
 	| '>' { LGREATERTHAN }
+	| ">=" { LGREATEREQUALS }
 	| "=:=" { LARITHEQUALS }
 	| "=\\=" { LARITHNOTEQUALS }
 	| '=' { LUNIFY }
 	| "==" { LEQUALS }
 	| "\\==" { LNOTEQUALS }
+	| "@<" { LTERMLESSTHAN }
+	| "@=<" { LTERMLESSEREQUALS }
+	| "@>" { LTERMGREATERTHAN }
+	| "@>=" { LTERMGREATEREQUALS }
 	| eof { LEOF }

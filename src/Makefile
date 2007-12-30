@@ -1,12 +1,12 @@
 OBJECTS = common.cmo utils.cmo unify.cmo print.cmo grammar.cmo lexer.cmo loading.cmo \
-		arithmetic.cmo builtin.cmo inference.cmo repl.cmo 
+		arithmetic.cmo compare.cmo builtin.cmo inference.cmo repl.cmo 
 
 UNIT_TESTS = test_helper.ml test_parser.ml test_unify.ml \
 		test_inference.ml test_builtin.ml test_arithmetic.ml
 
 OCAMLUNIT = $(shell ocamlfind query oUnit)
 
-OCAMLC = ocamlc -dtypes
+OCAMLC = ocamlc -dtypes -w p
 
 all: mfprolog
 

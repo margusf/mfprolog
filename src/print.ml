@@ -4,8 +4,8 @@ open Common
 
 (* Checks whether this cdr indicates proper list (as opposed to pair). *)
 let is_list_cdr = function 
-  | Atom "nil" -> true
-  | Complex ("cons", _) -> true
+  | Complex ("[]", []) -> true
+  | Complex (".", _) -> true
   | _ -> false
 
 let rec string_of_term = function
@@ -14,7 +14,7 @@ let rec string_of_term = function
   | Var v -> "{" ^ v ^ "}"
   (* Some special cases. *)
   | Complex ("cut", []) -> "!"
-  | Complex ("cons", [car; cdr]) -> 
+  | Complex (".", [car; cdr]) -> 
     "[" ^ (string_of_list car cdr) ^ "]"
   (* Generic printing of complex term. *)
   | Complex (func, args) ->
@@ -22,8 +22,8 @@ let rec string_of_term = function
 and string_of_list car cdr =
   let car_str = string_of_term car in
     match cdr with
-      | Atom "nil" -> car_str
-      | Complex ("cons", [xcar; xcdr]) ->
+      | Complex ("[]", []) -> car_str
+      | Complex (".", [xcar; xcdr]) ->
         let cdr_str =
           if is_list_cdr xcdr
           then string_of_list xcar xcdr

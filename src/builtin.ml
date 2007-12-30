@@ -38,8 +38,16 @@ let builtin_funs = [
   "=:=", 2, Arithmetic.builtin_comparison ( = );
   "=\\=", 2, Arithmetic.builtin_comparison ( != );
   ">", 2, Arithmetic.builtin_comparison ( > );
+  ">=", 2, Arithmetic.builtin_comparison ( >= );
   "<", 2, Arithmetic.builtin_comparison ( < );
+  "=<", 2, Arithmetic.builtin_comparison ( <= );
   "=", 2, builtin_unify;
+	"==", 2, Compare.builtin_compare (( = ) 0);
+	"\\==", 2, Compare.builtin_compare (( != ) 0);
+	"@>", 2, Compare.builtin_compare (( < ) 0);
+	"@>=", 2, Compare.builtin_compare (( <= ) 0);
+	"@<", 2, Compare.builtin_compare (( > ) 0);
+	"@=<", 2, Compare.builtin_compare (( >= ) 0);
 ]
 
 let builtin_matches name arity =

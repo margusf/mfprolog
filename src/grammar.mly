@@ -68,8 +68,8 @@ term:
 	| LATOM LOPENPAREN term_list LCLOSEPAREN { Complex ($1, $3) }
 	| LCUT { Complex ("cut", []) }
 	/* Different options for lists. */
-	| LOPENBRACKET LCLOSEBRACKET { Atom "nil" }
-	| LOPENBRACKET term_list LCLOSEBRACKET { Utils.make_cons (Atom "nil") $2 }
+	| LOPENBRACKET LCLOSEBRACKET { Utils.nil }
+	| LOPENBRACKET term_list LCLOSEBRACKET { Utils.make_cons Utils.nil $2 }
 	| LOPENBRACKET term_list LHEADTAIL term LCLOSEBRACKET
 		{ Utils.make_cons $4 $2 }
 	/* Arithmetic stuff */

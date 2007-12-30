@@ -53,10 +53,15 @@ let unique_termlist_vars terms =
 
 let get_all_query_results subst goals =
 	let output_var var =
-		var, subst var in
+		var, subst var
+	and bound_var = function
+		| var, Var mapping when var = mapping -> false
+		| _ -> true in
 	let vars = unique_termlist_vars goals in
 		let values = List.map output_var vars in
-			List.sort (fun (var1, val1) (var2, val2) -> compare var1 var2) values
+			(* Throw out mappings X -> X which correspond to unbound variables. *)
+			let filtered = List.filter bound_var values in
+				List.sort (fun (var1, val1) (var2, val2) -> compare var1 var2) filtered
 
 (* Debugging *)
 

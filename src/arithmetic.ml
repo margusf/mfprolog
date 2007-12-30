@@ -33,15 +33,13 @@ let eval_op op left right =
 	with Not_found -> raise (Prolog_error ("Unknown operator: " ^ op))
 
 (* Evaluates arithmetic expression expr. *)
-let rec eval_expr subst expr =
-	let eval_params = List.map (eval_expr subst) in
-	match expr with
-		| Integer i -> i
-		| Var v -> get_var_value subst v
-		(* All operations have two operands *)
-		| Complex (op, [left; right]) ->
-			eval_op op (eval_expr subst left) (eval_expr subst right)
-		| _ -> invalid_arguments ()
+let rec eval_expr subst = function
+	| Integer i -> i
+	| Var v -> get_var_value subst v
+	(* All operations have two operands *)
+	| Complex (op, [left; right]) ->
+		eval_op op (eval_expr subst left) (eval_expr subst right)
+	| _ -> invalid_arguments ()
 
 let builtin_is [left; right] subst success failure =
 	let right_value = Integer (eval_expr subst right) in

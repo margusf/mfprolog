@@ -14,9 +14,6 @@ let parse_term s =
   let lexbuf = Lexing.from_string s in
     Grammar.top_term Lexer.token lexbuf
 
-let cons x y = Complex ("cons", [x; y])
-and nil = Atom "nil"
-
 (* For testing various inference stuff. *)
 
 let parse_rules = List.map parse_rule
@@ -41,10 +38,14 @@ let parse_result_list_element =
 
 let run_tests testsuite =
   let do_single_test (ruleset, goal_str, result_list) =
-    let goals = parse_conjunct goal_str
-    and expected = List.map parse_result_list_element result_list in
-    let results = get_answer ruleset goals in
-      assert_equal ~msg:("test_inference failed for goal " ^ goal_str)
-                   ~printer:print_list
-                   expected results
+		try
+	    let goals = parse_conjunct goal_str
+	    and expected = List.map parse_result_list_element result_list in
+	    let results = get_answer ruleset goals in
+	      assert_equal ~msg:("test_inference failed for goal " ^ goal_str)
+	                   ~printer:print_list
+	                   expected results
+		with
+			| Parsing.Parse_error ->
+					assert_failure ("Parsing failed for \"" ^ goal_str ^ "\"")
   in List.iter do_single_test testsuite

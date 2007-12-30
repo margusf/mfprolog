@@ -1,6 +1,7 @@
 open OUnit
 open Common
 open Test_helper
+open Utils
 
 let try_conjunct =
   let rec iter i t = 
@@ -61,12 +62,12 @@ let test_parse_arithmetic _ =
 let test_parse_lists _ =
   try_conjunct [
     "[].",
-    [Atom "nil"];
+    [nil];
 
     "[a], [V], [term(a)].",
     [cons (Atom "a") nil;
      cons (Var "V") nil;
-     cons (Complex ("term", [Atom "a"])) (Atom "nil")];
+     cons (Complex ("term", [Atom "a"])) nil];
 
     "[a | b].",
     [cons (Atom "a") (Atom "b")];

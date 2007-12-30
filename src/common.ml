@@ -51,6 +51,21 @@ let unique_list =
 let unique_termlist_vars terms = 
   unique_list (List.flatten (List.map all_term_vars terms))
 
+let get_all_query_results subst goals =
+	let output_var var =
+		var, subst var in
+	let vars = unique_termlist_vars goals in
+		let values = List.map output_var vars in
+			List.sort (fun (var1, val1) (var2, val2) -> compare var1 var2) values
+
+(* Utility functions *)
+(* Convert list into cons term. *)
+let rec make_cons terminator = function
+	| [] -> terminator
+	| head :: tail -> Complex ("cons", [head; make_cons terminator tail])
+
+let make_list = make_cons (Atom "nil")
+
 (* Debugging *)
 
 let debug_enabled = ref false

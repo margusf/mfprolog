@@ -15,9 +15,8 @@ let ruleset = parse_rules [
 
 let tests = add_rules ruleset [
   "test_print(some(complex(term))).",
-  ["test_print(some(complex(term)))."];
-  "test_cut(A).", ["test_cut(boo).";
-                   "test_cut(grr)."]]
+  [[]];
+  "test_cut(A).", [["A", "boo"]; ["A", "grr"]]]
 
 let suite = "Builtin" >:::
  [("test_builtin" >:: (fun () -> run_tests tests))]

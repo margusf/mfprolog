@@ -27,19 +27,22 @@ let get_answer test_rules goals =
   let results = ref [] in
     match_terms goals empty_subst
       (fun subst fkont ->
-         results := !results @ [subst_in_terms subst goals];
+         results := !results @ [get_all_query_results subst goals];
          fkont ())
       (fun () -> ());
     !results
 
 let print_list lst =
-  let s = String.concat "\n" (List.map Print.string_of_term_list lst) in
+  let s = String.concat "\n" (List.map string_of_results lst) in
     "\n[" ^ s ^ "]\n"
 
+let parse_result_list_element =
+	List.map (function var, value -> var ^ "", parse_term value)
+
 let run_tests testsuite =
-  let do_single_test (ruleset, goal_str, expected_str) =
+  let do_single_test (ruleset, goal_str, result_list) =
     let goals = parse_conjunct goal_str
-    and expected = List.map parse_conjunct expected_str in
+    and expected = List.map parse_result_list_element result_list in
     let results = get_answer ruleset goals in
       assert_equal ~msg:("test_inference failed for goal " ^ goal_str)
                    ~printer:print_list

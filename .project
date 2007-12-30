@@ -16,14 +16,14 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>.DebuggerSourceLookup/buffer.ml</name>
-			<type>1</type>
-			<location>/usr/lib/ocaml/3.09.2/buffer.ml</location>
-		</link>
-		<link>
 			<name>.DebuggerSourceLookup/lazy.ml</name>
 			<type>1</type>
 			<location>/usr/lib/ocaml/3.09.2/lazy.ml</location>
+		</link>
+		<link>
+			<name>.DebuggerSourceLookup/buffer.ml</name>
+			<type>1</type>
+			<location>/usr/lib/ocaml/3.09.2/buffer.ml</location>
 		</link>
 		<link>
 			<name>.DebuggerSourceLookup/sort.ml</name>
@@ -31,24 +31,29 @@
 			<location>/usr/lib/ocaml/3.09.2/sort.ml</location>
 		</link>
 		<link>
-			<name>.DebuggerSourceLookup/int64.ml</name>
-			<type>1</type>
-			<location>/usr/lib/ocaml/3.09.2/int64.ml</location>
-		</link>
-		<link>
 			<name>.DebuggerSourceLookup/gc.ml</name>
 			<type>1</type>
 			<location>/usr/lib/ocaml/3.09.2/gc.ml</location>
 		</link>
 		<link>
-			<name>.DebuggerSourceLookup/genlex.ml</name>
+			<name>.DebuggerSourceLookup/int64.ml</name>
 			<type>1</type>
-			<location>/usr/lib/ocaml/3.09.2/genlex.ml</location>
+			<location>/usr/lib/ocaml/3.09.2/int64.ml</location>
+		</link>
+		<link>
+			<name>.HyperlinksLinkedFiles/print.ml</name>
+			<type>1</type>
+			<location>/home/margus/dev/stuff/mfprolog/src/print.ml</location>
 		</link>
 		<link>
 			<name>.DebuggerSourceLookup/nativeint.ml</name>
 			<type>1</type>
 			<location>/usr/lib/ocaml/3.09.2/nativeint.ml</location>
+		</link>
+		<link>
+			<name>.DebuggerSourceLookup/genlex.ml</name>
+			<type>1</type>
+			<location>/usr/lib/ocaml/3.09.2/genlex.ml</location>
 		</link>
 		<link>
 			<name>.DebuggerSourceLookup/arg.ml</name>
@@ -66,14 +71,14 @@
 			<location>/usr/lib/ocaml/3.09.2/format.ml</location>
 		</link>
 		<link>
-			<name>.DebuggerSourceLookup/camlinternalMod.ml</name>
-			<type>1</type>
-			<location>/usr/lib/ocaml/3.09.2/camlinternalMod.ml</location>
-		</link>
-		<link>
 			<name>.DebuggerSourceLookup/set.ml</name>
 			<type>1</type>
 			<location>/usr/lib/ocaml/3.09.2/set.ml</location>
+		</link>
+		<link>
+			<name>.DebuggerSourceLookup/camlinternalMod.ml</name>
+			<type>1</type>
+			<location>/usr/lib/ocaml/3.09.2/camlinternalMod.ml</location>
 		</link>
 		<link>
 			<name>.HyperlinksLinkedFiles/test_helper.ml</name>
@@ -161,14 +166,14 @@
 			<location>/usr/lib/ocaml/3.09.2/weak.ml</location>
 		</link>
 		<link>
-			<name>.DebuggerSourceLookup/scanf.ml</name>
-			<type>1</type>
-			<location>/usr/lib/ocaml/3.09.2/scanf.ml</location>
-		</link>
-		<link>
 			<name>.DebuggerSourceLookup/printf.ml</name>
 			<type>1</type>
 			<location>/usr/lib/ocaml/3.09.2/printf.ml</location>
+		</link>
+		<link>
+			<name>.DebuggerSourceLookup/scanf.ml</name>
+			<type>1</type>
+			<location>/usr/lib/ocaml/3.09.2/scanf.ml</location>
 		</link>
 		<link>
 			<name>.DebuggerSourceLookup/marshal.ml</name>
@@ -176,14 +181,14 @@
 			<location>/usr/lib/ocaml/3.09.2/marshal.ml</location>
 		</link>
 		<link>
-			<name>.HyperlinksLinkedFiles/list.mli</name>
-			<type>1</type>
-			<location>/usr/lib/ocaml/3.09.2/list.mli</location>
-		</link>
-		<link>
 			<name>.DebuggerSourceLookup/stringLabels.ml</name>
 			<type>1</type>
 			<location>/usr/lib/ocaml/3.09.2/stringLabels.ml</location>
+		</link>
+		<link>
+			<name>.HyperlinksLinkedFiles/list.mli</name>
+			<type>1</type>
+			<location>/usr/lib/ocaml/3.09.2/list.mli</location>
 		</link>
 		<link>
 			<name>.DebuggerSourceLookup/string.ml</name>
@@ -191,9 +196,9 @@
 			<location>/usr/lib/ocaml/3.09.2/string.ml</location>
 		</link>
 		<link>
-			<name>.HyperlinksLinkedFiles/inference.ml</name>
+			<name>.DebuggerSourceLookup/list.ml</name>
 			<type>1</type>
-			<location>/home/margus/dev/stuff/mfprolog/src/inference.ml</location>
+			<location>/usr/lib/ocaml/3.09.2/list.ml</location>
 		</link>
 		<link>
 			<name>.DebuggerSourceLookup/array.ml</name>
@@ -201,9 +206,9 @@
 			<location>/usr/lib/ocaml/3.09.2/array.ml</location>
 		</link>
 		<link>
-			<name>.DebuggerSourceLookup/list.ml</name>
+			<name>.HyperlinksLinkedFiles/inference.ml</name>
 			<type>1</type>
-			<location>/usr/lib/ocaml/3.09.2/list.ml</location>
+			<location>/home/margus/dev/stuff/mfprolog/src/inference.ml</location>
 		</link>
 		<link>
 			<name>.DebuggerSourceLookup/pervasives.ml</name>
@@ -211,14 +216,14 @@
 			<location>/usr/lib/ocaml/3.09.2/pervasives.ml</location>
 		</link>
 		<link>
-			<name>.DebuggerSourceLookup/stack.ml</name>
-			<type>1</type>
-			<location>/usr/lib/ocaml/3.09.2/stack.ml</location>
-		</link>
-		<link>
 			<name>.DebuggerSourceLookup/digest.ml</name>
 			<type>1</type>
 			<location>/usr/lib/ocaml/3.09.2/digest.ml</location>
+		</link>
+		<link>
+			<name>.DebuggerSourceLookup/stack.ml</name>
+			<type>1</type>
+			<location>/usr/lib/ocaml/3.09.2/stack.ml</location>
 		</link>
 		<link>
 			<name>.DebuggerSourceLookup/lexing.ml</name>

@@ -1,11 +1,6 @@
 %{
 open Common;;
 
-(* Convert list into cons term. *)
-let rec make_cons terminator = function
-	| [] -> terminator
-	| head :: tail -> Complex ("cons", [head; make_cons terminator tail])
-
 let make_op op arg1 arg2 =
 	Complex (op, [arg1; arg2])
 %}

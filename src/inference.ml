@@ -60,10 +60,25 @@ and match_term_single_rule rule term subst success failure =
 
 (* Main driver *)
 
+let string_of_results results =
+	let res_str = List.map (function var, value -> var ^ " = " ^
+                                                 (string_of_term value))
+	                       results in
+		if results = [] then
+			"Yes"
+		else
+			String.concat "\n" res_str
+
 let solve goals =
+	let answer_found = ref false in
   match_terms goals empty_subst
     (fun subst fkont ->
        print_endline
-         (string_of_terms "\n" (subst_in_terms subst goals));
+         (string_of_results (get_all_query_results subst goals));
+				answer_found := true;
+			 print_newline ();
        fkont ())
-    (fun () -> print_endline "No")
+    (fun () -> if not !answer_found then
+			         	 print_endline "No"
+							 else
+								 ())

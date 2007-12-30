@@ -31,35 +31,26 @@ and append_rules =
     "append([HEAD | TAIL], L, [HEAD | A]) :- append(TAIL, L, A)."]
 
 let family_tests = add_rules family_rules [
-  "father(bart, X).", ["father(bart, homer)."];
-  "parent(bart, X).", ["parent(bart, homer).";
-                       "parent(bart, marge)."];
-  "grandparent(bart, X).", ["grandparent(bart, abe).";
-                            "grandparent(bart, jessica)."];
-  "grandfather(bart, X).", ["grandfather(bart, abe)."];
+  "father(bart, X).", [["X", "homer"]];
+  "parent(bart, X).", [["X", "homer"]; ["X", "marge"]];
+  "grandparent(bart, X).", [["X", "abe"]; ["X", "jessica"]];
+  "grandfather(bart, X).", [["X", "abe"]];
   (* Result is given once for all child. *)
-  "couple(homer, marge).", ["couple(homer, marge).";
-                            "couple(homer, marge).";
-                            "couple(homer, marge)."]]
+  "couple(homer, marge).", [[]; []; []]]
 and johnmary_tests = add_rules johnmary_rules [
-  "likes(mary, wine).", ["likes(mary, wine)."];
-  "likes(mary, X).", ["likes(mary, food).";
-                      "likes(mary, wine)."];
-  "likes(X, wine).", ["likes(mary, wine).";
-                      "likes(john, wine)."];
-  "likes(john, wine).", ["likes(john, wine)."];
+  "likes(mary, wine).", [[]];
+  "likes(mary, X).", [["X", "food"]; ["X", "wine"]];
+  "likes(X, wine).", [["X", "mary"]; ["X", "john"]];
+  "likes(john, wine).", [[]];
   "likes(mary, booze).", [];
-  "likes(john, X).", ["likes(john, mary)."; 
-                      "likes(john, food).";
-                      "likes(john, wine)."];
+  "likes(john, X).", [["X", "mary"]; ["X", "food"]; ["X", "wine"]];
   "likes(john, X), likes(mary, X).",
-  ["likes(john, food), likes(mary, food).";
-   "likes(john, wine), likes(mary, wine)."]]
+  [["X", "food"]; ["X", "wine"]]]
 and append_tests = add_rules append_rules [
   "append([a, b], [c, d], X).",
-  ["append([a, b], [c, d], [a, b, c, d])."];
+  [["X", "[a, b, c, d]"]];
   "append(X, [c, d], [a, b, c, d]).",
-  ["append([a, b], [c, d], [a, b, c, d])."]]
+  [["X",  "[a, b]"]]]
 let all_tests = family_tests @ johnmary_tests @ append_tests
 
 let suite = "Inference" >:::

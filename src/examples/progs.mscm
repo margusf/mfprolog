@@ -1,0 +1,9 @@
+letrec(fact, fun(n, (println(n),
+                     if(n == 1, 1, n * fact(n - 1)))),
+	fact(5))
+
+
+letrec(	(even, fun(x, if(x == 0, true, odd(x - 1)))),
+		(odd, fun(x, if(x == 0, false, even(x - 1)))),
+	[even(1), odd(1), even(10), odd(10)])
+

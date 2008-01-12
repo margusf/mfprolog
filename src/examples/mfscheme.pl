@@ -39,9 +39,10 @@ make_env(Bindings, env(Bindings)).
 get_from_env(Var, [env(Bindings) | _], Val) :-
 	get_binding_from_list(Var, Bindings, Val).
 get_from_env(Var, [_ | Others], Val) :-
-	get_from_env(Var, Others, Val).
+	get_from_env(Var, Others, Val),
+	!.
 
-get_binding_from_list(Var, [(Var, Val) | _], Val).
+get_binding_from_list(Var, [(Var, Val) | _], Val) :- !.
 get_binding_from_list(Var, [_ | Others], Val) :-
 	get_binding_from_list(Var, Others, Val).
 
@@ -91,6 +92,11 @@ eval(if(If, Then, Else), Env, Ret) :-
 	  		eval(Then, Env, Ret));
 		eval(Else, Env, Ret)).
 
+% not(expr)
+eval(not(X), Env, Ret) :-
+	!,
+	eval(X == false, Env, Ret).
+
 % print(expr)
 eval(print(X), Env, true) :-
 	!,
@@ -110,13 +116,16 @@ eval((X, Y), Env, Ret) :-
 % apply(fun, [args])
 eval(apply(Fun, Args), Env, Ret) :-
 	!,
-	eval(Fun, Env, fun(FArgs, FBody)),
+	eval(Fun, Env, fun(FArgs, FBody, FEnv)),
 	eval_list(Args, Env, EArgs),
 	make_env(FArgs, EArgs, NewEnv),
-	eval(FBody, [NewEnv | Env], Ret).
+	eval(FBody, [NewEnv | FEnv], Ret).
 
 % lambda([args], body)
-eval(lambda(Args, Body), _Env, fun(Args, Body)) :- list(Args).
+eval(FunExpr, Env, fun(Args, Body, Env)) :-
+	FunExpr =.. [fun | FunArgs],
+	!,
+	split_last(FunArgs, Args, Body).
 
 % Convenience form: let(var, val, body)
 eval(let(Var, Val, Body), Env, Ret) :-
@@ -124,12 +133,30 @@ eval(let(Var, Val, Body), Env, Ret) :-
 	!,
 	eval(let((Var, Val), Body), Env, Ret).
 % let((var1, val1), (var2, val2), ..., body)
-eval(Expr, Env, Ret) :-
-	Expr =.. [let | LetArgs],
+eval(LetExpr, Env, Ret) :-
+	LetExpr =.. [let | LetArgs],
 	!,
 	split_last(LetArgs, Args, Body),
 	eval_let_args(Args, Env, Bindings),
 	make_env(Bindings, NewEnv),
+	eval(Body, [NewEnv | Env], Ret).
+
+% Convenience form: letrec(var, val, body)
+eval(letrec(Var, Val, Body), Env, Ret) :-
+	atom(Var),
+	!,
+	eval(letrec((Var, Val), Body), Env, Ret).
+% letrec((var1, val1), (var2, val2), ..., body)
+eval(LetrecExpr, Env, Ret) :-
+	LetrecExpr =.. [letrec | LetArgs],
+	!,
+	split_last(LetArgs, Args, Body),
+	% Make environment with empty dummy bindings for using when evaluating arguments
+	make_env([], NewEnv),
+	eval_let_args(Args, [NewEnv | Env], Bindings),
+	% Replace the bindings inside NewEnv so that they also go inside
+	% closures possibly constructed when evaluating arguments
+	setarg(1, NewEnv, Bindings),
 	eval(Body, [NewEnv | Env], Ret).
 
 % Convenience method for writing procedure calls as f(x, y, z, ...).
@@ -141,4 +168,5 @@ eval(Funcall, Env, Ret) :-
 % Entry point for REPL
 eval(Expr) :- eval(Expr, [], Ret), print(Ret).
 
-% let(fact, lambda([n], (println(n), if(n == 1, 1, n * fact(n - 1)))), fact(5))
+% letrec(fact, fun(n, (println(n), if(n == 1, 1, n * fact(n - 1)))), fact(5))
+% letrec((even, fun(x, if(x == 0, true, not(odd(x - 1))))), (odd, fun(x, not(even(x - 1)))), even(5))

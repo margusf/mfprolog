@@ -69,7 +69,20 @@ eval(false, _Env, false) :- !.
 
 % List support
 eval([], _Env, []).
-eval([H | T], Env, [EH | ET]) :- eval(H, Env, EH), eval(T, Env, ET).
+eval([H | T], Env, [EH | ET]) :-
+	eval(H, Env, EH),
+	eval(T, Env, ET).
+
+eval(cons(H, T), Env, Ret) :-
+	!,
+	eval([H | T], Env, Ret).
+eval(head(L), Env, Ret) :-
+	!,
+	eval(L, Env, [Ret | _]).
+eval(tail(L), Env, Ret) :-
+	!,
+	eval(L, Env, [_ | Ret]).
+
 
 % Variable access
 eval(Var, Env, Val) :- atom(Var), get_from_env(Var, Env, Val).

@@ -7,3 +7,9 @@ letrec(	(even, fun(x, if(x == 0, true, odd(x - 1)))),
 		(odd, fun(x, if(x == 0, false, even(x - 1)))),
 	[even(1), odd(1), even(10), odd(10)])
 
+letrec(map, fun(f, list,
+            	if(list == [],
+					[],
+					cons(f(head(list)),
+						map(f, tail(list))))),
+	map(fun(x, x * 10), [1, 2, 3, 4]))
